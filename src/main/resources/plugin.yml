@@ -1,0 +1,8 @@
+name: multibow
+version: 1.0-SNAPSHOT
+main: net.voidgroup.paper.multibow.MultiBowPlugin
+api-version: 1.21.1
+commands:
+  bow:
+    usage: /bow <type> [player]
+    description: Convert between bow types
