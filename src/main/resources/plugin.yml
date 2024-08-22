@@ -4,5 +4,7 @@ main: net.voidgroup.paper.multibow.MultiBowPlugin
 api-version: 1.21.1
 commands:
   bow:
-    usage: /bow <type> [player]
+    usage: |
+      /bow convert <type> [player]
+      /bow reset [player]
     description: Convert between bow types
