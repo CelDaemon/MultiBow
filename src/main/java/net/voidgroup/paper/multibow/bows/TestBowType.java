@@ -24,7 +24,7 @@ public class TestBowType extends BowType {
     @Override
     public @NotNull List<Component> getLore() {
         return List.of(
-                translatable("multibow.bowtype.test.lore.1", Style.style(NamedTextColor.DARK_PURPLE))
+                translatable("multibow.bowtype.test.lore.0", Style.style(NamedTextColor.DARK_PURPLE))
         );
     }
 

@@ -1,8 +1,6 @@
 package net.voidgroup.paper.multibow;
 
-import net.voidgroup.paper.multibow.bows.BowType;
-import net.voidgroup.paper.multibow.bows.ExplosiveBowType;
-import net.voidgroup.paper.multibow.bows.TestBowType;
+import net.voidgroup.paper.multibow.bows.*;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -28,6 +26,8 @@ public class BowTypeManager implements Listener {
     public void registerBowTypes() {
         registerBowType(new TestBowType(new NamespacedKey(plugin, "test")));
         registerBowType(new ExplosiveBowType(new NamespacedKey(plugin, "explosive")));
+        registerBowType(new AdminRemoveBowType(new NamespacedKey(plugin, "admin_remove")));
+        registerBowType(new AdminBanBowType(new NamespacedKey(plugin, "admin_ban")));
     }
     public @Nullable BowType getRegisteredBowType(@NotNull final NamespacedKey key) {
         return bowTypeRegistry.get(key);
