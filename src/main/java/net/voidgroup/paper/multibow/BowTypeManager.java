@@ -1,11 +1,13 @@
 package net.voidgroup.paper.multibow;
 
 import net.voidgroup.paper.multibow.bows.BowType;
+import net.voidgroup.paper.multibow.bows.ExplosiveBowType;
+import net.voidgroup.paper.multibow.bows.TestBowType;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -16,39 +18,45 @@ public class BowTypeManager implements Listener {
     private final NamespacedKey bowTypeKey;
     private final MultiBowPlugin plugin;
     private final Map<NamespacedKey, BowType> bowTypeRegistry = new HashMap<>();
-    public BowTypeManager(final MultiBowPlugin plugin) {
+    public BowTypeManager(@NotNull final MultiBowPlugin plugin) {
         this.bowTypeKey = new NamespacedKey(plugin, "bow_type");
         this.plugin = plugin;
     }
-    public void registerBowType(final BowType bowType) {
+    public void registerBowType(@NotNull final BowType bowType) {
         bowTypeRegistry.putIfAbsent(bowType.getKey(), bowType);
     }
-    public @Nullable BowType getBowType(final NamespacedKey key) {
+    public void registerBowTypes() {
+        registerBowType(new TestBowType(new NamespacedKey(plugin, "test")));
+        registerBowType(new ExplosiveBowType(new NamespacedKey(plugin, "explosive")));
+    }
+    public @Nullable BowType getRegisteredBowType(@NotNull final NamespacedKey key) {
         return bowTypeRegistry.get(key);
     }
-    public @Nullable BowType getBowType(final PersistentDataContainer dataContainer) {
-        final String bowString = dataContainer.get(bowTypeKey, PersistentDataType.STRING);
+    public @Nullable BowType getBowType(@NotNull final ItemStack item) {
+        final var bowString = item.getPersistentDataContainer().get(bowTypeKey, PersistentDataType.STRING);
         if(bowString == null) return null;
-        return getBowType(NamespacedKey.fromString(bowString, plugin));
+        final var bowKey = NamespacedKey.fromString(bowString, plugin);
+        if(bowKey == null) return null;
+        return getRegisteredBowType(bowKey);
     }
-    public void convertBow(final ItemStack item, final BowType bowType) {
+    public void convertBow(@NotNull final ItemStack item, @NotNull final BowType bowType) {
         final var meta = item.getItemMeta();
-        final var dataContainer = meta.getPersistentDataContainer();
-        final var oldBowType = getBowType(dataContainer);
+        final var oldBowType = getBowType(item);
         if(oldBowType != null) oldBowType.reset(meta);
+        final var dataContainer = meta.getPersistentDataContainer();
         dataContainer.set(bowTypeKey, PersistentDataType.STRING, bowType.getKey().asString());
         bowType.convert(meta);
         item.setItemMeta(meta);
     }
-    public void resetBow(final ItemStack item) {
+    public void resetBow(@NotNull final ItemStack item) {
         final var meta = item.getItemMeta();
         final var dataContainer = meta.getPersistentDataContainer();
-        final var bowType = getBowType(dataContainer);
+        final var bowType = getBowType(item);
         if(bowType != null) bowType.reset(meta);
         dataContainer.remove(bowTypeKey);
         item.setItemMeta(meta);
     }
-    public Map<NamespacedKey, BowType> getRegisteredBowTypes() {
+    public @NotNull Map<NamespacedKey, BowType> getRegisteredBowTypes() {
         return Collections.unmodifiableMap(bowTypeRegistry);
     }
 }

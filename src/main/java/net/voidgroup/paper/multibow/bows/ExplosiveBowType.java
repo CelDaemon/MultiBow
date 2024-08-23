@@ -4,7 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
-import static net.voidgroup.paper.multibow.Util.translationKey;
+import static net.voidgroup.paper.multibow.Util.translatable;
 public class ExplosiveBowType extends BowType {
     public ExplosiveBowType(NamespacedKey key) {
         super(key);
@@ -12,6 +12,6 @@ public class ExplosiveBowType extends BowType {
 
     @Override
     public @NotNull Component getName() {
-        return Component.translatable(translationKey("multibow.bowtype.explosive.name"));
+        return translatable("multibow.bowtype.explosive.name");
     }
 }

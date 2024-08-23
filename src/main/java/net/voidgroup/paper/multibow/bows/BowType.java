@@ -12,27 +12,28 @@ import java.util.Locale;
 
 public abstract class BowType {
     private final NamespacedKey key;
-    protected BowType(NamespacedKey key) {
+    protected BowType(@NotNull NamespacedKey key) {
         this.key = key;
     }
-    public NamespacedKey getKey() {
+    public void convert(@NotNull ItemMeta meta) {
+        meta.itemName(GlobalTranslator.render(getName(), Locale.US));
+        meta.lore(getLore().stream().map(x -> GlobalTranslator.render(x, Locale.US)).toList());
+        meta.setRarity(getRarity());
+    }
+    public void reset(@NotNull ItemMeta meta) {
+        meta.itemName(null);
+        meta.lore(null);
+        meta.setRarity(null);
+    }
+    public @NotNull NamespacedKey getKey() {
         return key;
     }
     public abstract @NotNull Component getName();
     public @NotNull List<Component> getLore() {
         return List.of();
     }
-    public ItemRarity getRarity() {
+    public @NotNull ItemRarity getRarity() {
         return ItemRarity.UNCOMMON;
     }
-    public void convert(ItemMeta meta) {
-        meta.itemName(GlobalTranslator.render(getName(), Locale.US));
-        meta.lore(getLore().stream().map(x -> GlobalTranslator.render(x, Locale.US)).toList());
-        meta.setRarity(getRarity());
-    }
-    public void reset(ItemMeta meta) {
-        meta.itemName(null);
-        meta.lore(null);
-        meta.setRarity(null);
-    }
+
 }
