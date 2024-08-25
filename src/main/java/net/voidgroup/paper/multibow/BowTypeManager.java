@@ -5,6 +5,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,20 +16,22 @@ import java.util.Map;
 public class BowTypeManager implements Listener {
     private final NamespacedKey bowTypeKey;
     private final MultiBowPlugin plugin;
+    private final PluginManager pluginManager;
     private final Map<NamespacedKey, BowType> bowTypeRegistry = new HashMap<>();
-    public BowTypeManager(@NotNull final MultiBowPlugin plugin) {
+    public BowTypeManager(@NotNull final MultiBowPlugin plugin, @NotNull final PluginManager pluginManager) {
         this.bowTypeKey = new NamespacedKey(plugin, "bow_type");
         this.plugin = plugin;
+        this.pluginManager = pluginManager;
     }
     public void registerBowType(@NotNull final BowType bowType) {
         bowTypeRegistry.putIfAbsent(bowType.getKey(), bowType);
     }
     public void registerBowTypes() {
-        registerBowType(new TestBowType());
-        registerBowType(new ExplosiveBowType());
-        registerBowType(new AdminRemoveBowType());
-        registerBowType(new AdminBanBowType());
-        registerBowType(new DispersionBowType());
+        registerBowType(new TestBowType(pluginManager));
+        registerBowType(new ExplosiveBowType(pluginManager));
+        registerBowType(new AdminRemoveBowType(pluginManager));
+        registerBowType(new AdminBanBowType(pluginManager));
+        registerBowType(new DispersionBowType(pluginManager));
     }
     public @Nullable BowType getRegisteredBowType(@NotNull final NamespacedKey key) {
         return bowTypeRegistry.get(key);

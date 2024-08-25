@@ -8,6 +8,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemRarity;
 import org.bukkit.permissions.Permission;
+import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -15,8 +16,8 @@ import java.util.List;
 import static net.voidgroup.paper.multibow.Util.translatable;
 
 public class TestBowType extends BowType {
-    public TestBowType() {
-        super(new NamespacedKey("multibow", "test"), new Permission("multibow.bowtype.test"));
+    public TestBowType(@NotNull final PluginManager pluginManager) {
+        super(pluginManager, new NamespacedKey("multibow", "test"), new Permission("multibow.bowtype.test"));
     }
 
     @Override

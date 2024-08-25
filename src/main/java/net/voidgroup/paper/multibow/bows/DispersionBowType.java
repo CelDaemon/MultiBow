@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.permissions.Permission;
+import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -13,8 +14,8 @@ import static net.voidgroup.paper.multibow.Util.translatable;
 
 public class DispersionBowType extends BowType {
     private static final Random random = new Random();
-    public DispersionBowType() {
-        super(new NamespacedKey("multibow", "dispersion"), new Permission("multibow.bowtype.dispersion"));
+    public DispersionBowType(@NotNull final PluginManager pluginManager) {
+        super(pluginManager, new NamespacedKey("multibow", "dispersion"), new Permission("multibow.bowtype.dispersion"));
     }
 
     @Override

@@ -17,7 +17,7 @@ public class MultiBowPlugin extends JavaPlugin {
     private final Server server = getServer();
     private final PluginManager pluginManager = server.getPluginManager();
 
-    private final BowTypeManager bowTypeManager = new BowTypeManager(this);
+    private final BowTypeManager bowTypeManager = new BowTypeManager(this, pluginManager);
 
     private final BowEventHandler bowEventHandler = new BowEventHandler(this, pluginManager, bowTypeManager);
     private final BowCommand bowCommand = new BowCommand(this, server, bowTypeManager);

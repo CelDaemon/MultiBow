@@ -8,14 +8,15 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.permissions.Permission;
+import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 import static net.voidgroup.paper.multibow.Util.translatable;
 public class ExplosiveBowType extends BowType {
-    public ExplosiveBowType() {
-        super(new NamespacedKey("multibow", "explosive"), new Permission("multibow.bowtype.explosive"));
+    public ExplosiveBowType(@NotNull final PluginManager pluginManager) {
+        super(pluginManager, new NamespacedKey("multibow", "explosive"), new Permission("multibow.bowtype.explosive"));
     }
 
     @Override

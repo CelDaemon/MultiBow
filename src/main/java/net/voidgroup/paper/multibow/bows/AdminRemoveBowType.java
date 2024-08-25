@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemRarity;
 import org.bukkit.permissions.Permission;
+import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -16,8 +17,9 @@ import static net.voidgroup.paper.multibow.Util.translatable;
 public class AdminRemoveBowType extends BowType {
 
     private final Permission immunityPermission = new Permission("multibow.bowtype.admin_remove.immune");
-    public AdminRemoveBowType() {
-        super(new NamespacedKey("multibow", "admin_remove"), new Permission("multibow.bowtype.admin_remove"));
+    public AdminRemoveBowType(@NotNull final PluginManager pluginManager) {
+        super(pluginManager, new NamespacedKey("multibow", "admin_remove"), new Permission("multibow.bowtype.admin_remove"));
+        pluginManager.addPermission(immunityPermission);
     }
 
     @Override

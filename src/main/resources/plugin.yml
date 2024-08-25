@@ -9,3 +9,6 @@ commands:
       /bow reset [player]
     description: Convert between bow types
     permission: multibow.command.bow
+permissions:
+  multibow.command.bow.other:
+    description: Use the bow command on other people
