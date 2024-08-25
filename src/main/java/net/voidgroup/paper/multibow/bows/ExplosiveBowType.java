@@ -7,14 +7,15 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.permissions.Permission;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 import static net.voidgroup.paper.multibow.Util.translatable;
 public class ExplosiveBowType extends BowType {
-    public ExplosiveBowType(@NotNull NamespacedKey key) {
-        super(key);
+    public ExplosiveBowType() {
+        super(new NamespacedKey("multibow", "explosive"), new Permission("multibow.bowtype.explosive"));
     }
 
     @Override
@@ -32,12 +33,10 @@ public class ExplosiveBowType extends BowType {
     @Override
     public void onShoot(@NotNull EntityShootBowEvent event) {
         final var oldProjectile = event.getProjectile();
-        final var velocity = oldProjectile.getVelocity();
-        final var location = oldProjectile.getLocation();
         oldProjectile.remove();
-        final var projectile = (TNTPrimed) oldProjectile.getWorld().spawnEntity(location, EntityType.TNT);
+        final var projectile = (TNTPrimed) oldProjectile.getWorld().spawnEntity(oldProjectile.getLocation(), EntityType.TNT);
         projectile.setFuseTicks(Math.max((int) (event.getForce() * 20), 20));
-        projectile.setVelocity(velocity);
+        projectile.setVelocity(oldProjectile.getVelocity());
         event.setProjectile(projectile);
     }
 }

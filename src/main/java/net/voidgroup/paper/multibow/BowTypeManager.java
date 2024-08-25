@@ -24,15 +24,16 @@ public class BowTypeManager implements Listener {
         bowTypeRegistry.putIfAbsent(bowType.getKey(), bowType);
     }
     public void registerBowTypes() {
-        registerBowType(new TestBowType(new NamespacedKey(plugin, "test")));
-        registerBowType(new ExplosiveBowType(new NamespacedKey(plugin, "explosive")));
-        registerBowType(new AdminRemoveBowType(new NamespacedKey(plugin, "admin_remove")));
-        registerBowType(new AdminBanBowType(new NamespacedKey(plugin, "admin_ban")));
+        registerBowType(new TestBowType());
+        registerBowType(new ExplosiveBowType());
+        registerBowType(new AdminRemoveBowType());
+        registerBowType(new AdminBanBowType());
+        registerBowType(new DispersionBowType());
     }
     public @Nullable BowType getRegisteredBowType(@NotNull final NamespacedKey key) {
         return bowTypeRegistry.get(key);
     }
-    public @Nullable BowType getBowType(@NotNull final ItemStack item) {
+    public @Nullable BowType getItemBowType(@NotNull final ItemStack item) {
         final var bowString = item.getPersistentDataContainer().get(bowTypeKey, PersistentDataType.STRING);
         if(bowString == null) return null;
         final var bowKey = NamespacedKey.fromString(bowString, plugin);
@@ -40,9 +41,8 @@ public class BowTypeManager implements Listener {
         return getRegisteredBowType(bowKey);
     }
     public void convertBow(@NotNull final ItemStack item, @NotNull final BowType bowType) {
+        resetBow(item);
         final var meta = item.getItemMeta();
-        final var oldBowType = getBowType(item);
-        if(oldBowType != null) oldBowType.reset(meta);
         final var dataContainer = meta.getPersistentDataContainer();
         dataContainer.set(bowTypeKey, PersistentDataType.STRING, bowType.getKey().asString());
         bowType.convert(meta);
@@ -51,7 +51,7 @@ public class BowTypeManager implements Listener {
     public void resetBow(@NotNull final ItemStack item) {
         final var meta = item.getItemMeta();
         final var dataContainer = meta.getPersistentDataContainer();
-        final var bowType = getBowType(item);
+        final var bowType = getItemBowType(item);
         if(bowType != null) bowType.reset(meta);
         dataContainer.remove(bowTypeKey);
         item.setItemMeta(meta);

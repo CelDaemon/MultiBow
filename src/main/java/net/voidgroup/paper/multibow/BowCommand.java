@@ -41,7 +41,10 @@ public class BowCommand implements TabCompleter, CommandExecutor {
         return switch (args[0]) {
             case "convert" -> switch (count) {
                 case 2 ->
-                        bowTypeManager.getRegisteredBowTypes().keySet().stream().map(NamespacedKey::asString).toList();
+                        bowTypeManager.getRegisteredBowTypes().entrySet()
+                                .stream()
+                                .filter(x -> sender.hasPermission(x.getValue().getPermission()))
+                                .map(x -> x.getKey().asString()).toList();
                 case 3 -> null;
                 default -> List.of();
             };
@@ -87,6 +90,10 @@ public class BowCommand implements TabCompleter, CommandExecutor {
         final var bowType = bowTypeManager.getRegisteredBowType(bowTypeKey);
         if(bowType == null) {
             sendError(sender, translatable("multibow.command.bow.unknown_type", Style.style(NamedTextColor.RED)));
+            return true;
+        }
+        if(!sender.hasPermission(bowType.getPermission())) {
+            sendError(sender, translatable("multibow.command.bow.no_permission", Style.style(NamedTextColor.RED)));
             return true;
         }
         final Player player = getPlayer(sender, args, 2);

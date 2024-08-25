@@ -7,6 +7,7 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.permissions.Permission;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -14,8 +15,10 @@ import java.util.Locale;
 
 public abstract class BowType {
     private final NamespacedKey key;
-    protected BowType(@NotNull final NamespacedKey key) {
+    private final Permission permission;
+    protected BowType(@NotNull final NamespacedKey key, @NotNull Permission permission) {
         this.key = key;
+        this.permission = permission;
     }
     public void convert(@NotNull final ItemMeta meta) {
         meta.itemName(GlobalTranslator.render(getName(), Locale.US));
@@ -29,6 +32,9 @@ public abstract class BowType {
     }
     public @NotNull NamespacedKey getKey() {
         return key;
+    }
+    public @NotNull Permission getPermission() {
+        return permission;
     }
     public abstract @NotNull Component getName();
     public @NotNull List<Component> getLore() {

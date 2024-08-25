@@ -25,8 +25,10 @@ public class BowEventHandler implements Listener {
     public void onShootBow(@NotNull final EntityShootBowEvent event) {
         final var item = event.getBow();
         if(item == null) return;
-        final var bow = bowTypeManager.getBowType(item);
+        final var bow = bowTypeManager.getItemBowType(item);
         if(bow == null) return;
+        final var shooter = event.getEntity();
+        if(!shooter.hasPermission(bow.getPermission())) event.setCancelled(true);
         bow.onShoot(event);
     }
     @EventHandler
@@ -35,7 +37,7 @@ public class BowEventHandler implements Listener {
         @SuppressWarnings("UnstableApiUsage")
         final var bowItem = arrow.getWeapon();
         if(bowItem == null) return;
-        final var bow = bowTypeManager.getBowType(bowItem);
+        final var bow = bowTypeManager.getItemBowType(bowItem);
         if(bow == null) return;
         bow.onHit(event);
     }

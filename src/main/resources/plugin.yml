@@ -8,3 +8,4 @@ commands:
       /bow convert <type> [player]
       /bow reset [player]
     description: Convert between bow types
+    permission: multibow.command.bow
